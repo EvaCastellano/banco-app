@@ -70,6 +70,59 @@ const createUsernames = function (accounts) {
       .join('') // js
   })
 }
-
 createUsernames(accounts)
-console.log(accounts)
+
+/* TODO: TAREAS:
+- Mostrar el mensaje de bienvenida
+- Cambiar opacidad
+- Quitar los movimientos que hay em el html
+- poner los nuevos movimientos en el html
+
+- Hacer lo mismo desde REACT
+- Subir app en REACT
+- 1) Se compila: npm run build
+- 2) Subir la carpeta build a certweb  // gh-pages | la carpeta no esta en la raiz !!
+- 3) Al ser un subdirectorio, quizá haya que añadir un campo en el package.json "homepage": "http://certweb.com/bankist-app"  (hecho)
+*/
+
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault()
+  const currentAccount = accounts.find(
+    (account) => account.username === inputLoginUsername.value
+  )
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    console.log('login correcto')
+    // Mostramos bienvenido Juan
+    containerApp.style.opacity = 100
+    labelWelcome.textContent = `Bienvenido ${
+      currentAccount.owner.split(' ')[0]
+    }`
+    updateUI(currentAccount)
+  } else {
+    console.log('login incorrecto')
+    // Mostramos Usuario o contraseña incorrectos
+  }
+
+  function updateUI(account) {
+    displayMovements(account.movements)
+  }
+
+  function displayMovements(movements) {
+    containerMovements.innerHTML = ''
+    movements.forEach(function (mov, i) {
+      const type = mov > 0 ? 'deposit' : 'withdrawal'
+      const html = `
+        <div class="movements__row">
+          <div class="movements__type movements__type--${type}">${
+        i + 1
+      } ${type}</div>
+          <div class="movements__value">${mov}€</div>
+        </div>
+      `
+      containerMovements.insertAdjacentHTML('afterbegin', html)
+    })
+  }
+
+  inputLoginUsername.value = inputLoginPin.value = ''
+  inputLoginPin.blur()
+})
