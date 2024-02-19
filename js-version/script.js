@@ -103,8 +103,10 @@ btnLogin.addEventListener('click', function (e) {
     // Mostramos Usuario o contraseña incorrectos
   }
 
-  function updateUI(account) {
-    displayMovements(account.movements)
+  function updateUI({ movements }) {
+    displayMovements(movements)
+    displayBalance(movements)
+    displaySummary(movements)
   }
 
   function displayMovements(movements) {
@@ -126,3 +128,20 @@ btnLogin.addEventListener('click', function (e) {
   inputLoginUsername.value = inputLoginPin.value = ''
   inputLoginPin.blur()
 })
+
+const displayBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0)
+  labelBalance.textContent = `${balance.toFixed(2)}€`
+}
+
+const displaySummary = function (movements) {
+  const sumIn = movements
+    .filter((mov) => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0)
+  labelSumIn.textContent = `${sumIn.toFixed(2)}€`
+
+  const sumOut = movements
+    .filter((mov) => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0)
+  labelSumOut.textContent = `${Math.abs(sumOut).toFixed(2)}€`
+}
