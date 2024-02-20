@@ -1,6 +1,5 @@
 {
   "name": "react-version",
-  "homepage": "http://certweb.com/bankist-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
